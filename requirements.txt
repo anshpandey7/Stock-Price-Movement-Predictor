@@ -1,0 +1,8 @@
+pandas
+numpy
+scikit-learn
+matplotlib
+yfinance
+ta
+jupyter
+nbformat

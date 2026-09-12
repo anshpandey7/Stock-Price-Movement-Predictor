@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockMove Predictor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="landing-body">
+    
+    <!-- Background Image with Parallax -->
+    <div class="parallax-bg"></div>
+    <div class="bg-overlay"></div>
+
+    <!-- Top Navbar -->
+    <nav class="navbar">
+        <div class="nav-logo" onclick="window.scrollTo(0,0)" style="cursor:pointer">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#00D084" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="14" width="4" height="8" rx="1"/>
+                <rect x="10" y="8" width="4" height="14" rx="1"/>
+                <rect x="18" y="2" width="4" height="20" rx="1"/>
+            </svg>
+            <span>StockMove</span>
+        </div>
+        <div class="nav-links">
+            <a href="#home" class="active">Home</a>
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How it Works</a>
+            <a href="#technology">Technology</a>
+        </div>
+        <div class="nav-actions">
+            <a href="/explore" class="btn-primary" style="text-decoration:none">Get Started</a>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Marquee Ticker -->
+        <div class="ticker-wrapper">
+            <div class="ticker-content" id="mirror-stocks-list">
+                <div id="mirror-loading" class="mirror-loader" style="display:flex; align-items:center; gap: 10px;">
+                    <div class="spinner small-spinner"></div>
+                    <p style="margin:0;">Connecting to market...</p>
+                </div>
+                <!-- Populated via JS with mirror-list-horizontal items -->
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <section id="home" class="container hero-full-page">
+            <div class="hero-grid">
+                
+                <div class="hero-content">
+                    <div class="overline">DATA • INSIGHTS • SMARTER DECISIONS</div>
+                    <h1>Stock Price <br><span class="accent">Movement</span><br>Predictor</h1>
+                    <p class="subtitle">Leverage data, technical indicators, and machine learning to predict the next-day movement of stocks. Make informed decisions, not guesses.</p>
+                    
+                    <div class="search-box interactive-panel">
+                        <form id="landing-predict-form">
+                            <input type="text" id="landing-ticker-input" placeholder="Enter Ticker (e.g. AAPL)" required autocomplete="off">
+                            <button type="submit" class="btn-primary">Predict <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+                        </form>
+                    </div>
+
+                    <div class="features-row">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="#00D084"><rect x="2" y="14" width="4" height="8"/><rect x="10" y="8" width="4" height="14"/><rect x="18" y="2" width="4" height="20"/></svg>
+                            </div>
+                            <span>Data-Driven<br>Insights</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00D084" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                            </div>
+                            <span>Machine Learning<br>Powered</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00D084" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            </div>
+                            <span>Simple &<br>User-Friendly</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <a href="#features" class="scroll-indicator">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+                <span>Scroll to explore</span>
+            </a>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="container content-section">
+            <h2 class="section-title">Why StockMove?</h2>
+            <div class="grid-3">
+                <div class="info-card">
+                    <h3>No Data Leakage</h3>
+                    <p>Our model strictly uses chronological splits and t-1 data for targets, ensuring realistic, honest evaluations.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Advanced Indicators</h3>
+                    <p>We automatically calculate RSI, MACD, and SMA using the ta library for robust feature engineering.</p>
+                </div>
+                <div class="info-card">
+                    <h3>Random Forest</h3>
+                    <p>Compare raw baselines against an engineered ensemble model tuned to predict market directions accurately.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="container content-section">
+            <h2 class="section-title">How It Works</h2>
+            <div class="step-list">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                        <h3>Fetch Live Data</h3>
+                        <p>Enter any ticker. We instantly pull 2 years of daily OHLCV data from Yahoo Finance.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                        <h3>Train the Model</h3>
+                        <p>We scale the features and train a Random Forest classifier exclusively on the first 80% of data.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                        <h3>Predict Tomorrow</h3>
+                        <p>We evaluate accuracy on the remaining 20% test set, then run the live model on today's closing metrics to predict tomorrow's direction.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Section -->
+        <section id="technology" class="container content-section">
+            <h2 class="section-title">Built with Precision</h2>
+            <div class="grid-3" style="grid-template-columns: repeat(4, 1fr);">
+                <div class="info-card" style="text-align: center; padding: 2rem;">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2" style="margin-bottom: 1rem;"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    <h3 style="font-size: 1.2rem;">Python Engine</h3>
+                    <p style="font-size: 0.9rem;">Powered by a robust Python backend for high-speed financial calculations.</p>
+                </div>
+                <div class="info-card" style="text-align: center; padding: 2rem;">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2" style="margin-bottom: 1rem;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                    <h3 style="font-size: 1.2rem;">TA-Lib</h3>
+                    <p style="font-size: 0.9rem;">Industry-standard technical analysis features engineered flawlessly.</p>
+                </div>
+                <div class="info-card" style="text-align: center; padding: 2rem;">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2" style="margin-bottom: 1rem;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                    <h3 style="font-size: 1.2rem;">Scikit-Learn</h3>
+                    <p style="font-size: 0.9rem;">State-of-the-art Random Forest classifiers for predictive accuracy.</p>
+                </div>
+                <div class="info-card" style="text-align: center; padding: 2rem;">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent-primary)" stroke-width="2" style="margin-bottom: 1rem;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                    <h3 style="font-size: 1.2rem;">Flask API</h3>
+                    <p style="font-size: 0.9rem;">Lightning-fast, stateless REST API seamlessly feeding real-time data.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="/static/script.js"></script>
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                // Update active link
+                document.querySelectorAll('.nav-links a').forEach(el => el.classList.remove('active'));
+                if (this.classList.contains('nav-links')) {
+                    this.classList.add('active');
+                }
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

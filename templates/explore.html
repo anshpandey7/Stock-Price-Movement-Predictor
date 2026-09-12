@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Performers - StockMove</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .explore-page {
+            padding-top: calc(var(--nav-height) + 4rem);
+            min-height: 100vh;
+        }
+        
+        .explore-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .explore-header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+        
+        .explore-header p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+        
+        .explore-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding-bottom: 5rem;
+        }
+        
+        .explore-card {
+            background: rgba(17, 21, 28, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .explore-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 208, 132, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 208, 132, 0.15);
+        }
+        
+        .card-ticker {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+        
+        .card-price {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .card-change {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .loader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 300px;
+        }
+    </style>
+</head>
+<body class="details-body">
+    
+    <!-- Top Navbar -->
+    <nav class="navbar">
+        <a href="/" class="nav-logo" style="text-decoration:none">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#00D084" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="14" width="4" height="8" rx="1"/>
+                <rect x="10" y="8" width="4" height="14" rx="1"/>
+                <rect x="18" y="2" width="4" height="20" rx="1"/>
+            </svg>
+            <span>StockMove</span>
+        </a>
+        <div class="nav-links">
+            <a href="/">&larr; Back to Home</a>
+        </div>
+    </nav>
+
+    <main class="container explore-page">
+        <div class="explore-header">
+            <h1>Top Market Performers</h1>
+            <p>Live insights on the most heavily traded market leaders.</p>
+        </div>
+        
+        <div id="explore-loader" class="loader-container">
+            <div class="spinner"></div>
+            <p style="margin-top: 1rem; color: var(--text-muted);">Fetching live market data...</p>
+        </div>
+        
+        <div id="explore-grid" class="explore-grid hidden">
+            <!-- Cards populated by JS -->
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/top_stocks');
+                if (!response.ok) throw new Error('Failed to fetch top stocks');
+                
+                const stocks = await response.json();
+                
+                const grid = document.getElementById('explore-grid');
+                grid.innerHTML = ''; 
+                
+                stocks.forEach(stock => {
+                    const card = document.createElement('a');
+                    card.href = '/stock/' + stock.ticker;
+                    card.className = 'explore-card';
+                    
+                    const changeClass = stock.isUp ? 'change-up' : 'change-down';
+                    
+                    card.innerHTML = `
+                        <div class="card-ticker">${stock.ticker}</div>
+                        <div class="card-price">${stock.price}</div>
+                        <div class="card-change ${changeClass}">${stock.change}</div>
+                    `;
+                    
+                    grid.appendChild(card);
+                });
+                
+                document.getElementById('explore-loader').classList.add('hidden');
+                grid.classList.remove('hidden');
+                
+            } catch (err) {
+                console.error("Error loading top stocks:", err);
+                document.getElementById('explore-loader').innerHTML = '<p style="color:var(--down-color)">Failed to load market data.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

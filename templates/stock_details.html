@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ ticker }} - StockMove Detailed Brief</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Pass the ticker to our JS file
+        const CURRENT_TICKER = "{{ ticker }}";
+    </script>
+</head>
+<body class="details-body">
+    
+    <!-- Top Navbar -->
+    <nav class="navbar">
+        <a href="/" class="nav-logo" style="text-decoration:none">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#00D084" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="14" width="4" height="8" rx="1"/>
+                <rect x="10" y="8" width="4" height="14" rx="1"/>
+                <rect x="18" y="2" width="4" height="20" rx="1"/>
+            </svg>
+            <span>StockMove</span>
+        </a>
+        <div class="nav-links">
+            <a href="/">&larr; Back to Search</a>
+        </div>
+    </nav>
+
+    <main class="container details-container">
+        
+        <div id="loading" class="full-screen-loader">
+            <div class="spinner"></div>
+            <p id="loading-text" class="loading-cycle">Initializing Random Forest prediction for {{ ticker }}...</p>
+        </div>
+
+        <div id="error-message" class="hidden error-panel" style="margin-top: 100px;">
+            <p id="error-text"></p>
+            <a href="/" class="btn-primary" style="display:inline-block; margin-top:20px; text-decoration:none;">Go Back</a>
+        </div>
+
+        <div id="dashboard" class="dashboard-wrapper hidden">
+            
+            <div class="details-header" style="grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1rem;">
+                <div>
+                    <h1 id="res-ticker" class="ticker-title">{{ ticker }}</h1>
+                    <span id="res-company" class="company-name">Loading company info...</span>
+                </div>
+                <div class="price-info" style="text-align: right;">
+                    <h3 id="res-price" style="font-size: 2.5rem; margin-bottom: 5px;">--</h3>
+                    <span id="res-return" class="" style="font-size: 1.2rem;">--</span>
+                </div>
+            </div>
+
+            <!-- Left Column: Chart and About -->
+            <div class="dashboard-left">
+                <!-- Chart Panel -->
+                <div class="chart-panel interactive-panel" style="min-height: 450px;">
+                    <div class="chart-tabs">
+                        <span class="active">1D</span><span>1W</span><span>1M</span><span>3M</span><span>1Y</span><span>5Y</span>
+                    </div>
+
+                    <div class="chart-container" style="height: 400px; position: relative;">
+                        <canvas id="stockChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- About Company -->
+                <div class="extra-brief">
+                    <h3>About Company</h3>
+                    <p id="res-summary">Loading company description...</p>
+                    <div class="metric-row">
+                        <div class="metric-col">
+                            <span class="metric-label">Sector</span>
+                            <span id="res-sector" class="metric-val">--</span>
+                        </div>
+                        <div class="metric-col">
+                            <span class="metric-label">Today's Volume</span>
+                            <span id="res-volume" class="metric-val">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Cards -->
+            <div class="dashboard-right details-cards">
+                <!-- Prediction Card -->
+                <div class="glass-card prediction-card">
+                    <div class="card-label">Next Day Prediction</div>
+                    <div id="res-prediction-wrapper" class="prediction-large">
+                        <svg id="pred-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></svg>
+                        <span id="res-prediction">--</span>
+                    </div>
+                    <div class="confidence-bar-wrapper">
+                        <div class="conf-labels">
+                            <span>Confidence</span>
+                            <span id="res-accuracy">--%</span>
+                        </div>
+                        <div class="conf-track">
+                            <div id="conf-fill" class="conf-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fundamentals Card -->
+                <div class="glass-card fundamentals-card">
+                    <div class="card-label">Fundamentals</div>
+                    <div class="indicator-row">
+                        <span>Market Cap</span>
+                        <span id="res-mcap" class="ind-value" style="color: #fff;">--</span>
+                    </div>
+                    <div class="indicator-row">
+                        <span>P/E Ratio</span>
+                        <span id="res-pe" class="ind-value" style="color: #fff;">--</span>
+                    </div>
+                    <div class="indicator-row">
+                        <span>52W High</span>
+                        <span id="res-high52" class="ind-value" style="color: #fff;">--</span>
+                    </div>
+                    <div class="indicator-row">
+                        <span>52W Low</span>
+                        <span id="res-low52" class="ind-value" style="color: #fff;">--</span>
+                    </div>
+                </div>
+
+                <!-- Indicators Card -->
+                <div class="glass-card indicators-card">
+                    <div class="card-label">Key Indicators</div>
+                    <div class="indicator-row">
+                        <span>RSI</span>
+                        <span id="res-rsi" class="ind-value">--</span>
+                    </div>
+                    <div class="indicator-row">
+                        <span>MACD</span>
+                        <span id="res-macd" class="ind-value">--</span>
+                    </div>
+                    <div class="indicator-row">
+                        <span>SMA (20)</span>
+                        <span id="res-sma20" class="ind-value">--</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
